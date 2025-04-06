@@ -1219,7 +1219,7 @@ int lgw_stop(void) {
     x = lgw_disconnect();
     if (x != LGW_HAL_SUCCESS) {
         printf("ERROR: failed to disconnect concentrator\n");
-        err = LGW_HAL_ERROR;
+        // err = LGW_HAL_ERROR;
     }
 
     if (CONTEXT_COM_TYPE == LGW_COM_SPI) {
