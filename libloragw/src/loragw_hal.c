@@ -1219,15 +1219,17 @@ int lgw_stop(void) {
     x = lgw_disconnect();
     if (x != LGW_HAL_SUCCESS) {
         printf("ERROR: failed to disconnect concentrator\n");
-        // err = LGW_HAL_ERROR;
+        err = LGW_HAL_ERROR;
     }
 
     if (CONTEXT_COM_TYPE == LGW_COM_SPI) {
-        DEBUG_MSG("INFO: Closing I2C for temperature sensor\n");
-        x = i2c_linuxdev_close(ts_fd);
-        if (x != 0) {
-            printf("ERROR: failed to close I2C temperature sensor device (err=%i)\n", x);
-            err = LGW_HAL_ERROR;
+        if (ts_fd >=0) { // use this if to pypass if a temperature sensor is not found
+            DEBUG_MSG("INFO: Closing I2C for temperature sensor\n");
+            x = i2c_linuxdev_close(ts_fd);
+            if (x != 0) {
+                printf("ERROR: failed to close I2C temperature sensor device (err=%i)\n", x);
+                err = LGW_HAL_ERROR;
+            }
         }
 
         if (CONTEXT_BOARD.full_duplex == true) {
