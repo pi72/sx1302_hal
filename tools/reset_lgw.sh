@@ -57,27 +57,24 @@ reset() {
 
     gpioset ${AD5338R_RESET_GPIO}=0; WAIT_GPIO
     gpioset ${AD5338R_RESET_GPIO}=1; WAIT_GPIO
-
-    echo "1" > /sys/class/gpio/gpio$AD5338R_RESET_PIN/value; WAIT_GPIO
 }
 
 term() {
-    # cleanup all GPIOs
-    if [ -d /sys/class/gpio/gpio$SX1302_RESET_PIN ]
-    then
-        echo "$SX1302_RESET_PIN" > /sys/class/gpio/unexport; WAIT_GPIO
+    if gpiofind "GPIO$SX1302_RESET_PIN" >/dev/null 2>&1; then
+        echo "Releasing GPIO$SX1302_RESET_PIN"
+        # No explicit release needed if not using gpioset -m
     fi
-    if [ -d /sys/class/gpio/gpio$SX1261_RESET_PIN ]
-    then
-        echo "$SX1261_RESET_PIN" > /sys/class/gpio/unexport; WAIT_GPIO
+
+    if gpiofind "GPIO$SX1261_RESET_PIN" >/dev/null 2>&1; then
+        echo "Releasing GPIO$SX1261_RESET_PIN"
     fi
-    if [ -d /sys/class/gpio/gpio$SX1302_POWER_EN_PIN ]
-    then
-        echo "$SX1302_POWER_EN_PIN" > /sys/class/gpio/unexport; WAIT_GPIO
+
+    if gpiofind "GPIO$SX1302_POWER_EN_PIN" >/dev/null 2>&1; then
+        echo "Releasing GPIO$SX1302_POWER_EN_PIN"
     fi
-    if [ -d /sys/class/gpio/gpio$AD5338R_RESET_PIN ]
-    then
-        echo "$AD5338R_RESET_PIN" > /sys/class/gpio/unexport; WAIT_GPIO
+
+    if gpiofind "GPIO$AD5338R_RESET_PIN" >/dev/null 2>&1; then
+        echo "Releasing GPIO$AD5338R_RESET_PIN"
     fi
 }
 
